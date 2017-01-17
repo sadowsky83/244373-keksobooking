@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url] [![Dependency status][dependency-image]][dependency-url]
 
 * Студент: [Анатолий Садовский](https://up.htmlacademy.ru/javascript/8/user/244373).
-* Наставник: `Неизвестно`.
+* Наставник: Сергей Катревич.
 
 ---
 
