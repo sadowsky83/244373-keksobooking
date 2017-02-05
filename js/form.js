@@ -1,19 +1,19 @@
 'use strict';
 
-var pin = document.querySelectorAll('.pin');
+var pins = document.querySelectorAll('.pin');
 var dialogClose = document.querySelector('.dialog__close');
 var dialog = document.querySelector('.dialog');
 
 // функция удаления активного класса у обьектов с классом pin
-var deleteClassPinActive = function () {
-  for (var j = 0; j < pin.length; j++) {
-    pin[j].classList.remove('pin--active');
+var deleteClassPinActive = function() {
+  for (var j = 0; j < pins.length; j++) {
+    pins[j].classList.remove('pin--active');
   }
 };
 
 // добавление класс эктив меткам на карте и открытие окна диалог
-for (var i = 0; i < pin.length; i++) {
-  pin[i].addEventListener('click', function (action) {
+for (var i = 0; i < pins.length; i++) {
+  pins[i].addEventListener('click', function(action) {
     deleteClassPinActive();
     var target = action.currentTarget;
     target.classList.add('pin--active');
@@ -22,13 +22,12 @@ for (var i = 0; i < pin.length; i++) {
 }
 
 // изъятие класса эктив у меток на карте и закрытие окна далог
-dialogClose.addEventListener('click', function () {
+dialogClose.addEventListener('click', function() {
   dialog.style.display = 'none';
   deleteClassPinActive();
 });
 
 // проверка правильность введенных данных
-var noticeForm = document.querySelector('.notice__form');
 var noticeFormTitle = document.getElementById('title');
 var noticeFormPrice = document.getElementById('price');
 var noticeFormAddress = document.getElementById('address');
@@ -45,7 +44,7 @@ noticeFormPrice.max = 1000000;
 noticeFormAddress.required = true;
 
 // автоматисечкая корректировка полей в форме
-var syncValue = function(firstForm, secondForm){
+var syncValue = function(firstForm, secondForm) {
   firstForm.value = secondForm.value;
 };
 
@@ -53,14 +52,18 @@ var syncValue = function(firstForm, secondForm){
 var timeCheckInSelect = document.getElementById('time');
 var timeCheckOutSelect = document.getElementById('timeout');
 
-timeCheckInSelect.addEventListener('change', function () {
-syncValue(timeCheckOutSelect, timeCheckInSelect);
+timeCheckInSelect.addEventListener('change', function() {
+  syncValue(timeCheckOutSelect, timeCheckInSelect);
+});
+
+timeCheckOutSelect.addEventListener('change', function() {
+  syncValue(timeCheckInSelect, timeCheckOutSelect);
 });
 
 // синхронизация полей «Тип жилья» и минимальной цены
 var housingType = document.getElementById('type');
 
-housingType.addEventListener('change', function () {
+housingType.addEventListener('change', function() {
   if (housingType.value === 'flat') {
     noticeFormPrice.min = 1000;
     noticeFormPrice.placeholder = 1000;
@@ -78,6 +81,10 @@ housingType.addEventListener('change', function () {
 var roomNumber = document.getElementById('room_number');
 var capacityGuest = document.getElementById('capacity');
 
-roomNumber.addEventListener('change', function () {
-syncValue(capacityGuest, roomNumber);
+roomNumber.addEventListener('change', function() {
+  syncValue(capacityGuest, roomNumber);
+});
+
+capacityGuest.addEventListener('change', function() {
+  syncValue(roomNumber, capacityGuest);
 });
