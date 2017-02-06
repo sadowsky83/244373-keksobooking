@@ -3,28 +3,66 @@
 var pins = document.querySelectorAll('.pin');
 var dialogClose = document.querySelector('.dialog__close');
 var dialog = document.querySelector('.dialog');
+var tokyoPinMap = document.querySelector('.tokyo__pin-map');
+
+var ENTER_KEY_CODE = 13;
+
+// определение переменной ENTER_KEY_CODE (клавиши Ввод)
+var activateEvent = function (evt) {
+  return evt.keyCode && evt.keyCode === ENTER_KEY_CODE;
+};
+
+// изменение ARIA роли
+var statusAriaRole = function (element) {
+  var pressed = (element.getAttribute('aria-pressed') === 'true');
+  if (!pressed) {
+    element.setAttribute('aria-pressed', !pressed);
+  }
+};
 
 // функция удаления активного класса у обьектов с классом pin
-var deleteClassPinActive = function() {
+var deleteClassPinActive = function () {
   for (var j = 0; j < pins.length; j++) {
     pins[j].classList.remove('pin--active');
   }
 };
 
 // добавление класс эктив меткам на карте и открытие окна диалог
-for (var i = 0; i < pins.length; i++) {
-  pins[i].addEventListener('click', function(action) {
-    deleteClassPinActive();
-    var target = action.currentTarget;
-    target.classList.add('pin--active');
-    dialog.style.display = 'block';
-  });
-}
+var addClassPin = function (evt) {
+  var element = evt.target.classList.contains('pin') ? evt.target : evt.target.parentElement;
+  deleteClassPinActive();
+  element.classList.add('pin--active');
+  dialog.style.display = 'block';
+};
 
-// изъятие класса эктив у меток на карте и закрытие окна далог
-dialogClose.addEventListener('click', function() {
+// добавление класс эктив меткам на карте и открытие окна диалог по нажатию
+var keyAddClassPin = function (evt) {
+  if (activateEvent(evt)) {
+    addClassPin(evt);
+  }
+};
+
+// закрытие окна диалог
+var closeDialog = function () {
   dialog.style.display = 'none';
   deleteClassPinActive();
+  statusAriaRole(dialogClose);
+};
+
+// открвтие окна диалог и активация pin по клику
+tokyoPinMap.addEventListener('click', addClassPin);
+
+// открвтие окна диалог и активация pin по нажатию
+tokyoPinMap.addEventListener('keydown', keyAddClassPin);
+
+// закрытие окна диалог по клику
+dialogClose.addEventListener('click', closeDialog);
+
+// закрытие окна диалог по нажатию
+dialogClose.addEventListener('keydown', function (evt) {
+  if (activateEvent(evt)) {
+    closeDialog();
+  }
 });
 
 // проверка правильность введенных данных
