@@ -7,63 +7,58 @@ var tokyoPinMap = document.querySelector('.tokyo__pin-map');
 
 var ENTER_KEY_CODE = 13;
 
-// определение переменной ENTER_KEY_CODE (клавиши Ввод)
-var activateEvent = function (evt) {
-  return evt.keyCode && evt.keyCode === ENTER_KEY_CODE;
+// Обработчик события по клику
+var clickHandler = function (event) {
+  deleteClassPinActive();
+  var clickedElement;
+  if (event.target.classList.contains('pin')) {
+    clickedElement = event.target;
+  } else if (!event.target.classList.contains('pin')) {
+    clickedElement = event.target.parentNode;
+  }
+  clickedElement.classList.add('pin--active');
+  clickedElement.setAttribute('aria-pressed', 'true');
+  dialog.style.display = 'block';
 };
+tokyoPinMap.addEventListener('click', clickHandler, true);
 
-// изменение ARIA роли
-var statusAriaRole = function (element) {
-  var pressed = (element.getAttribute('aria-pressed') === 'true');
-  if (!pressed) {
-    element.setAttribute('aria-pressed', !pressed);
+// Обработчик события по клавиатуре
+var keydownHandler = function (event) {
+  if (event.keyCode === ENTER_KEY_CODE) {
+    deleteClassPinActive();
+    var clickedElement = event.target;
+    clickedElement.classList.add('pin--active');
+    clickedElement.setAttribute('aria-pressed', 'true');
+    dialog.style.display = 'block';
   }
 };
+tokyoPinMap.addEventListener('keydown', keydownHandler, true);
+
+// Скрытие диалогового окна и удаление класса у метки
+dialogClose.addEventListener('click', function () {
+  dialog.style.display = 'none';
+  deleteClassPinActive();
+});
 
 // функция удаления активного класса у обьектов с классом pin
 var deleteClassPinActive = function () {
   for (var j = 0; j < pins.length; j++) {
     pins[j].classList.remove('pin--active');
+    pins[j].setAttribute('aria-pressed', 'false');
   }
 };
 
-// добавление класс эктив меткам на карте и открытие окна диалог
-var addClassPin = function (evt) {
-  var element = evt.target.classList.contains('pin') ? evt.target : evt.target.parentElement;
-  deleteClassPinActive();
-  element.classList.add('pin--active');
-  dialog.style.display = 'block';
-};
-
-// добавление класс эктив меткам на карте и открытие окна диалог по нажатию
-var keyAddClassPin = function (evt) {
-  if (activateEvent(evt)) {
-    addClassPin(evt);
+// Назначение атрибутов элементам на карте
+for (var i = 0; i < pins.length; i++) {
+  var element = pins[i];
+  element.setAttribute('role', 'button');
+  element.setAttribute('tabindex', '1');
+  if (element.classList.contains('pin--active')) {
+    element.setAttribute('aria-pressed', 'true');
+  } else {
+    element.setAttribute('aria-pressed', 'false');
   }
-};
-
-// закрытие окна диалог
-var closeDialog = function () {
-  dialog.style.display = 'none';
-  deleteClassPinActive();
-  statusAriaRole(dialogClose);
-};
-
-// открвтие окна диалог и активация pin по клику
-tokyoPinMap.addEventListener('click', addClassPin);
-
-// открвтие окна диалог и активация pin по нажатию
-tokyoPinMap.addEventListener('keydown', keyAddClassPin);
-
-// закрытие окна диалог по клику
-dialogClose.addEventListener('click', closeDialog);
-
-// закрытие окна диалог по нажатию
-dialogClose.addEventListener('keydown', function (evt) {
-  if (activateEvent(evt)) {
-    closeDialog();
-  }
-});
+}
 
 // проверка правильность введенных данных
 var noticeFormTitle = document.getElementById('title');
@@ -82,7 +77,7 @@ noticeFormPrice.max = 1000000;
 noticeFormAddress.required = true;
 
 // автоматисечкая корректировка полей в форме
-var syncValue = function(firstForm, secondForm) {
+var syncValue = function (firstForm, secondForm) {
   firstForm.value = secondForm.value;
 };
 
@@ -90,18 +85,18 @@ var syncValue = function(firstForm, secondForm) {
 var timeCheckInSelect = document.getElementById('time');
 var timeCheckOutSelect = document.getElementById('timeout');
 
-timeCheckInSelect.addEventListener('change', function() {
+timeCheckInSelect.addEventListener('change', function () {
   syncValue(timeCheckOutSelect, timeCheckInSelect);
 });
 
-timeCheckOutSelect.addEventListener('change', function() {
+timeCheckOutSelect.addEventListener('change', function () {
   syncValue(timeCheckInSelect, timeCheckOutSelect);
 });
 
 // синхронизация полей «Тип жилья» и минимальной цены
 var housingType = document.getElementById('type');
 
-housingType.addEventListener('change', function() {
+housingType.addEventListener('change', function () {
   if (housingType.value === 'flat') {
     noticeFormPrice.min = 1000;
     noticeFormPrice.placeholder = 1000;
@@ -119,10 +114,10 @@ housingType.addEventListener('change', function() {
 var roomNumber = document.getElementById('room_number');
 var capacityGuest = document.getElementById('capacity');
 
-roomNumber.addEventListener('change', function() {
+roomNumber.addEventListener('change', function () {
   syncValue(capacityGuest, roomNumber);
 });
 
-capacityGuest.addEventListener('change', function() {
+capacityGuest.addEventListener('change', function () {
   syncValue(roomNumber, capacityGuest);
 });
