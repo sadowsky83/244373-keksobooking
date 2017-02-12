@@ -7,18 +7,24 @@ var tokyoPinMap = document.querySelector('.tokyo__pin-map');
 
 var ENTER_KEY_CODE = 13;
 
+// делегирование области tokyoPinMap
+var delegatedChangeClass = function () {
+  var target = event.target;
+  while (target !=tokyoPinMap){
+  if (target.classList.contains('pin')) {
+  target.classList.add('pin--active');
+  dialog.style.display = 'block';
+return;}
+  else {
+    target = target.parentNode;
+}
+}
+};
+
 // Обработчик события по клику
 var clickHandler = function (event) {
   deleteClassPinActive();
-  var clickedElement;
-  if (event.target.classList.contains('pin')) {
-    clickedElement = event.target;
-  } else if (!event.target.classList.contains('pin')) {
-    clickedElement = event.target.parentNode;
-  }
-  clickedElement.classList.add('pin--active');
-  clickedElement.setAttribute('aria-pressed', 'true');
-  dialog.style.display = 'block';
+  delegatedChangeClass();
 };
 tokyoPinMap.addEventListener('click', clickHandler, true);
 
@@ -26,10 +32,7 @@ tokyoPinMap.addEventListener('click', clickHandler, true);
 var keydownHandler = function (event) {
   if (event.keyCode === ENTER_KEY_CODE) {
     deleteClassPinActive();
-    var clickedElement = event.target;
-    clickedElement.classList.add('pin--active');
-    clickedElement.setAttribute('aria-pressed', 'true');
-    dialog.style.display = 'block';
+    delegatedChangeClass();
   }
 };
 tokyoPinMap.addEventListener('keydown', keydownHandler, true);
