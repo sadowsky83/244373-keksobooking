@@ -10,15 +10,15 @@ var ENTER_KEY_CODE = 13;
 // делегирование области tokyoPinMap
 var delegatedChangeClass = function () {
   var target = event.target;
-  while (target !=tokyoPinMap){
-  if (target.classList.contains('pin')) {
-  target.classList.add('pin--active');
-  dialog.style.display = 'block';
-return;}
-  else {
-    target = target.parentNode;
-}
-}
+  while (target !== tokyoPinMap) {
+    if (target.classList.contains('pin')) {
+      target.classList.add('pin--active');
+      dialog.style.display = 'block';
+      return;
+    } else {
+      target = target.parentNode;
+    }
+  }
 };
 
 // Обработчик события по клику
