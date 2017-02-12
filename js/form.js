@@ -13,6 +13,7 @@ var delegatedChangeClass = function () {
   while (target !== tokyoPinMap) {
     if (target.classList.contains('pin')) {
       target.classList.add('pin--active');
+      clickedElement.setAttribute('aria-pressed', 'true');
       dialog.style.display = 'block';
       return;
     } else {
