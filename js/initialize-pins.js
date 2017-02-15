@@ -28,8 +28,8 @@ window.initializePins = function (field, object, block, closeBlock) {
   // Обработчик события по клавиатуре
   var keydownHandler = function (event) {
     if (event.keyCode === ENTER_KEY_CODE) {
-      deleteClassPinActive ();
-      delegatedChangeClass ();
+      deleteClassPinActive();
+      delegatedChangeClass();
     }
   };
   field.addEventListener('keydown', keydownHandler, true);

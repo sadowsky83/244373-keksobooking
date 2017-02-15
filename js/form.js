@@ -26,12 +26,12 @@ var timeIn = ['12', '13', '14'];
 var timeOut = ['12', '13', '14'];
 
 //  массивы полей типа жилья/стоимость
-var type = ['Лачуга', 'Квартира', 'Дворец'];
-var prise = ['0', '1000', '10000'];
+var type = ['flat', 'shack', 'palace'];
+var prise = ['1000', '0', '10000'];
 
 // массивы количества комнат/мест
-var rooms = ['1 комната', '2 комнаты', '100 комнат'];
-var guests = ['не для гостей', 'для 3 гостей', 'для 3 гостей'];
+var rooms = ['1room', '2rooms', '100rooms'];
+var guests = ['noguest', '3guest', '3guest'];
 
 // логика по отрисовке меток на карте: добавление обработчиков, показ и закрытие карточки, отметку метки как активной.
 window.initializePins(tokyoPinMap, pins, dialog, dialogClose);
@@ -40,19 +40,30 @@ window.initializePins(tokyoPinMap, pins, dialog, dialogClose);
 var timeCheckInSelect = document.getElementById('time');
 var timeCheckOutSelect = document.getElementById('timeout');
 
-time.addEventListener('change', function () {
-  window.synchronizeFields = function (timeCheckInSelect, timeCheckOutSelect, timeIn, timeOut, 'value');
+timeCheckInSelect.addEventListener('change', function () {
+  window.synchronizeFields(timeCheckInSelect, timeCheckOutSelect, timeIn, timeOut, 'value');
+});
+
+timeCheckOutSelect.addEventListener('change', function () {
+  window.synchronizeFields(timeCheckOutSelect, timeCheckInSelect, timeOut, timeIn, 'value');
 });
 
 // синхронизация полей «Тип жилья» и минимальной цены
 var housingType = document.getElementById('type');
-time.addEventListener('change', function () {
-  window.synchronizeFields = function (housingType, noticeFormPrice, type, prise, 'min');
+
+housingType.addEventListener('change', function () {
+  window.synchronizeFields(housingType, noticeFormPrice, type, prise, 'min');
+  noticeFormPrice.placeholder = prise[housingType.selectedIndex];
 });
 
 // синхронизация полей количество комнат и количество гостей
 var roomNumber = document.getElementById('room_number');
 var capacityGuest = document.getElementById('capacity');
-time.addEventListener('change', function () {
-  window.synchronizeFields = function (roomNumber, capacityGuest, rooms, guests, 'value');
+
+roomNumber.addEventListener('change', function () {
+  window.synchronizeFields(roomNumber, capacityGuest, rooms, guests, 'value');
+});
+
+capacityGuest.addEventListener('change', function () {
+  window.synchronizeFields(capacityGuest, roomNumber, guests, rooms, 'value');
 });
