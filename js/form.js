@@ -53,7 +53,7 @@ var housingType = document.getElementById('type');
 
 housingType.addEventListener('change', function () {
   window.synchronizeFields(housingType, noticeFormPrice, type, prise, 'min');
-  noticeFormPrice.placeholder = prise[housingType.selectedIndex];
+  noticeFormPrice.placeholder = prise[type.indexOf(housingType.value)];
 });
 
 // синхронизация полей количество комнат и количество гостей
