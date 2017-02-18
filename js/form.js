@@ -13,7 +13,6 @@ var delegatedChangeClass = function () {
   while (target !== tokyoPinMap) {
     if (target.classList.contains('pin')) {
       target.classList.add('pin--active');
-      clickedElement.setAttribute('aria-pressed', 'true');
       dialog.style.display = 'block';
       return;
     } else {
@@ -23,7 +22,7 @@ var delegatedChangeClass = function () {
 };
 
 // Обработчик события по клику
-var clickHandler = function (event) {
+var clickHandler = function () {
   deleteClassPinActive();
   delegatedChangeClass();
 };
@@ -48,7 +47,6 @@ dialogClose.addEventListener('click', function () {
 var deleteClassPinActive = function () {
   for (var j = 0; j < pins.length; j++) {
     pins[j].classList.remove('pin--active');
-    pins[j].setAttribute('aria-pressed', 'false');
   }
 };
 
