@@ -40,30 +40,17 @@ window.initializePins(tokyoPinMap, pins, dialog, dialogClose);
 var timeCheckInSelect = document.getElementById('time');
 var timeCheckOutSelect = document.getElementById('timeout');
 
-timeCheckInSelect.addEventListener('change', function () {
-  window.synchronizeFields(timeCheckInSelect, timeCheckOutSelect, timeIn, timeOut, 'value');
-});
-
-timeCheckOutSelect.addEventListener('change', function () {
-  window.synchronizeFields(timeCheckOutSelect, timeCheckInSelect, timeOut, timeIn, 'value');
-});
+window.synchronizeFields(timeCheckInSelect, timeCheckOutSelect, timeIn, timeOut, 'value');
+window.synchronizeFields(timeCheckOutSelect, timeCheckInSelect, timeOut, timeIn, 'value');
 
 // синхронизация полей «Тип жилья» и минимальной цены
 var housingType = document.getElementById('type');
 
-housingType.addEventListener('change', function () {
-  window.synchronizeFields(housingType, noticeFormPrice, type, prise, 'min');
-  noticeFormPrice.placeholder = prise[type.indexOf(housingType.value)];
-});
+window.synchronizeFields(housingType, noticeFormPrice, type, prise, 'min');
 
 // синхронизация полей количество комнат и количество гостей
 var roomNumber = document.getElementById('room_number');
 var capacityGuest = document.getElementById('capacity');
 
-roomNumber.addEventListener('change', function () {
-  window.synchronizeFields(roomNumber, capacityGuest, rooms, guests, 'value');
-});
-
-capacityGuest.addEventListener('change', function () {
-  window.synchronizeFields(capacityGuest, roomNumber, guests, rooms, 'value');
-});
+window.synchronizeFields(roomNumber, capacityGuest, rooms, guests, 'value');
+window.synchronizeFields(capacityGuest, roomNumber, guests, rooms, 'value');
